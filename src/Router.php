@@ -13,12 +13,14 @@ use Westech\Infrastructure\Database\Operation\DeleteProduct;
 use Westech\Infrastructure\Database\Operation\GetAllProducts;
 use Westech\Infrastructure\Database\Operation\GetClosestProduct;
 use Westech\Infrastructure\Database\Operation\UpdateProduct;
+use Westech\Middleware\Authentication;
 use Westech\ValueObject\RequestInfo;
 
 class Router
 {
 	public function __construct(
 		private RequestInfo $requestInfo,
+		private string $bearerSecret,
 		private	Connection $db,
 		private CreateProduct $createProduct,
 		private GetAllProducts $getAllProducts,
@@ -31,7 +33,7 @@ class Router
 	public function handleRequest(): void
 	{
 		if ($this->requestInfo->getUri()[1] == 'products') {
-			if ($this->requestInfo->getUri()[2] == 'matchClosest') {
+			if (isset($this->requestInfo->getUri()[2]) && $this->requestInfo->getUri()[2] == 'matchClosest') {
 				$this->handleMatchClosest($this->requestInfo->getMethod());
 			  return;
 			}
@@ -55,6 +57,12 @@ class Router
 				echo $getProductsCase->execute($offset);
 				break;
 			case 'POST':
+				$authenticated = Authentication::validateBearer($this->bearerSecret, $this->requestInfo->getBearerToken());
+				if (!$authenticated) {
+					http_response_code(403);
+					return;
+				}
+
 				$requestValid = $this->validateRequest(['name', 'description', 'brand', 'category', 'price']);
 				if ($requestValid) {
 					$createProductCase = new CreateProductCase($this->db, $this->createProduct);
@@ -73,6 +81,12 @@ class Router
 				break;
 
 			case 'PATCH':
+				$authenticated = Authentication::validateBearer($this->bearerSecret, $this->requestInfo->getBearerToken());
+				if (!$authenticated) {
+					http_response_code(403);
+					return;
+				}
+
 				$requestValid = $this->validateRequest(['id', 'name', 'description', 'brand', 'category', 'price']);
 				if ($requestValid) {
 					$updateProductCase = new UpdateProductCase($this->db, $this->updateProduct);
@@ -92,6 +106,12 @@ class Router
 				break;
 
 			case 'DELETE':
+				$authenticated = Authentication::validateBearer($this->bearerSecret, $this->requestInfo->getBearerToken());
+				if (!$authenticated) {
+					http_response_code(403);
+					return;
+				}
+
 				$requestValid = $this->validateRequest(['id']);
 				if ($requestValid) {
 					$deleteProductCase = new DeleteProductCase($this->db, $this->deleteProduct);

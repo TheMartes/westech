@@ -27,7 +27,7 @@ $updateProduct = new \Westech\Infrastructure\Database\Operation\UpdateProduct($d
 $deleteProduct = new \Westech\Infrastructure\Database\Operation\DeleteProduct($db);
 
 try {
-	$router = new Router($requestInfo, $db, $createProduct, $getAllProducts, $getClosestProduct, $updateProduct, $deleteProduct);
+	$router = new Router($requestInfo, $envVariables->getBearerSecret(), $db, $createProduct, $getAllProducts, $getClosestProduct, $updateProduct, $deleteProduct);
 	$router->handleRequest();
 } catch (\Exception $e) {
 	http_response_code(500);

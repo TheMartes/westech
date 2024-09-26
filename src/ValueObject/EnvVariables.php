@@ -9,7 +9,8 @@ class EnvVariables
         private string $user,
         private string $pass,
         private string $name,
-        private string $port
+        private string $port,
+        private string $bearerSecret
     )
     {}
 
@@ -36,5 +37,10 @@ class EnvVariables
     public function getPort(): string
     {
         return $this->port;
+    }
+
+    public function getBearerSecret(): string
+    {
+        return $this->bearerSecret;
     }
 }

@@ -15,6 +15,7 @@ class GetEnvVariables
             'DB_PASS' => $_ENV['DB_PASS'],
             'DB_NAME' => $_ENV['DB_NAME'],
             'DB_PORT' => $_ENV['DB_PORT'],
+						'BEARER_SECRET' => $_ENV['BEARER_SECRET']
         ];
 
 		    foreach ($envVariables as $key => $value) {
@@ -28,7 +29,8 @@ class GetEnvVariables
 					$envVariables['DB_USER'],
 					$envVariables['DB_PASS'],
 					$envVariables['DB_NAME'],
-					$envVariables['DB_PORT']
+					$envVariables['DB_PORT'],
+					$envVariables['BEARER_SECRET']
 				);
 	}
 }

@@ -9,6 +9,7 @@ services:
     volumes:
       - .:/app
     environment:
+      - BEARER_SECRET=iwillpretenedimasecret
       - DB_HOST=db
       - DB_USER=westech
       - DB_PASS=westech
