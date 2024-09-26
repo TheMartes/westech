@@ -1,0 +1,30 @@
+---
+version: '3'
+services:
+  westech:
+    image: westech
+    build: .
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=db
+      - DB_USER=westech
+      - DB_PASS=westech
+      - DB_NAME=westech
+      - DB_PORT=3306
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_DATABASE=westech
+      - MYSQL_USER=westech
+      - MYSQL_PASSWORD=westech
+    volumes:
+      - ./fixtures:/docker-entrypoint-initdb.d
