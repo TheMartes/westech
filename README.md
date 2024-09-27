@@ -50,3 +50,9 @@ I decided not to use JWT because I wanted to keep it simple (and without librari
 
 ### Why is there composer?
 Because I'm lazy and I don't want use require / require_once.
+
+### Why custom router?
+I know the router isn't the prettiest thing in the world, but I wanted to do without libraries. And also I never did "own" router before.
+
+### Contact
+Of course you will have a lot of questions so if you wanna talk more about my decisions here feel free to contact me.

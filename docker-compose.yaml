@@ -16,7 +16,6 @@ services:
       - DB_PORT=3306
     depends_on:
       - db
-    command: dev/init.sh
   db:
     image: mysql:5.7
     restart: always
